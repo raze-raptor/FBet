@@ -44,16 +44,26 @@
                     <li>Crash</li>
                 </ul>
             </div>
-        </div>
 
-        <div class="chat beveled-box">
-            <div class="messages" id="chat-messages">Chat messages will appear here</div>
-            <input type="text" id="message-input" placeholder="Type your message..." disabled>
-            <button id="send-btn" disabled>Send</button>
-        </div>
+            <!-- Chat Box -->
+            <div class="chat beveled-box">
+                <div class="messages" id="chat-messages">Chat messages will appear here</div>
+                <input type="text" id="message-input" placeholder="Type your message..." disabled>
+                <button id="send-btn" disabled>Send</button>
+            </div>
 
-        <div class="admin-panel beveled-box">
-            <!-- Admin Panel Content Goes Here -->
+            <!-- Admin Panel -->
+            <div class="admin-panel beveled-box">
+                <h2>Admin Panel</h2>
+                <label for="admin-action">Select Action:</label>
+                <select id="admin-action">
+                    <option value="deduct-fbux">Deduct FBux</option>
+                    <option value="apply-fbux">Apply FBux</option>
+                    <option value="ban-account">Ban Account</option>
+                    <option value="warn-account">Warn Account</option>
+                </select>
+                <button id="admin-action-btn">Admin Action</button>
+            </div>
         </div>
     </div>
 
