@@ -15,22 +15,45 @@
             <div class="profile">
                 <img src="placeholder-profile.png" alt="Profile Picture">
                 <span id="username">Guest</span>
-                <span id="balance">450 FBux</span>
+                <span id="balance">Balance: 450 FBux</span>
             </div>
-            <div class="buttons">
-                <button id="signin-btn">Sign In</button>
+            <div class="menu">
+                <button id="discord-login-btn">Login with Discord</button>
                 <button id="play-btn" disabled>Play</button>
+                <button id="logout-btn" disabled>Logout</button>
+                <button id="mod-panel-btn" disabled>Mod Panel</button>
             </div>
         </div>
 
         <div class="content">
-            <!-- Your content here -->
+            <!-- Website News Box -->
+            <div class="beveled-box">
+                <h2>Website News</h2>
+                <div id="news-content">No news available.</div>
+            </div>
+
+            <!-- Active Games -->
+            <div class="games beveled-box">
+                <h2>Active Games</h2>
+                <ul>
+                    <li>Mines</li>
+                    <li>Blackjack</li>
+                    <li>Dragon Tower</li>
+                    <li>Roulette</li>
+                    <li>Hi-Low</li>
+                    <li>Crash</li>
+                </ul>
+            </div>
         </div>
 
-        <div class="chat">
+        <div class="chat beveled-box">
             <div class="messages" id="chat-messages">Chat messages will appear here</div>
             <input type="text" id="message-input" placeholder="Type your message..." disabled>
             <button id="send-btn" disabled>Send</button>
+        </div>
+
+        <div class="admin-panel beveled-box">
+            <!-- Admin Panel Content Goes Here -->
         </div>
     </div>
 
