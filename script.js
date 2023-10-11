@@ -1,39 +1,73 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const signInBtn = document.getElementById('signin-btn');
-    const playBtn = document.getElementById('play-btn');
-    const messageInput = document.getElementById('message-input');
-    const sendBtn = document.getElementById('send-btn');
-    const chatMessages = document.getElementById('chat-messages');
+const express = require('express');
+const axios = require('axios');
+const session = require('express-session');
 
-    let userLoggedIn = false;
+const app = express();
+app.use(session({
+    secret: 'your_secret_key',
+    resave: false,
+    saveUninitialized: true
+}));
 
-    signInBtn.addEventListener('click', function() {
-        userLoggedIn = true;
-        playBtn.removeAttribute('disabled');
-        messageInput.removeAttribute('disabled');
-        sendBtn.removeAttribute('disabled');
-    });
+const clientID = 'YOUR_DISCORD_CLIENT_ID';
+const clientSecret = 'YOUR_DISCORD_CLIENT_SECRET';
+const redirectURI = 'YOUR_REDIRECT_URI';
+const tokenURL = 'https://discord.com/api/oauth2/token';
+const userInfoURL = 'https://discord.com/api/users/@me';
 
-    playBtn.addEventListener('click', function() {
-        if (userLoggedIn) {
-            // Logic for playing games
-            // Update balance, handle game results, etc.
-            // Example: Update balance - document.getElementById('balance').innerText = newBalance;
-        } else {
-            alert('Please sign in to play.');
-        }
-    });
+// Discord OAuth2 callback
+app.get('/auth/discord/callback', async (req, res) => {
+    const { code } = req.query;
 
-    sendBtn.addEventListener('click', function() {
-        if (userLoggedIn) {
-            const message = messageInput.value;
-            if (message.trim() !== '') {
-                // Logic for sending chat messages
-                // Example: chatMessages.innerHTML += `<div>${username}: ${message}</div>`;
-                messageInput.value = '';
+    const tokenParams = {
+        client_id: clientID,
+        client_secret: clientSecret,
+        grant_type: 'authorization_code',
+        code: code,
+        redirect_uri: redirectURI,
+        scope: 'identify email'
+    };
+
+    try {
+        // Exchange authorization code for access token
+        const tokenResponse = await axios.post(tokenURL, null, {
+            params: tokenParams,
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
             }
-        } else {
-            alert('Please sign in to chat.');
-        }
-    });
+        });
+
+        // Fetch user data from Discord API
+        const userInfoResponse = await axios.get(userInfoURL, {
+            headers: {
+                Authorization: `Bearer ${tokenResponse.data.access_token}`
+            }
+        });
+
+        // Store user data in session
+        req.session.user = userInfoResponse.data;
+
+        // Redirect to the main game page
+        res.redirect('/game');
+    } catch (error) {
+        console.error('Error during Discord OAuth2 callback:', error);
+        res.redirect('/');
+    }
+});
+
+// Game page route (check if user is authenticated)
+app.get('/game', (req, res) => {
+    if (req.session.user) {
+        // User is authenticated, render the game page
+        // You can access user data from req.session.user
+        const user = req.session.user;
+        res.send(`Welcome, ${user.username}! Balance: ${user.balance} FBux | Level: ${user.level} | XP: ${user.xp}`);
+    } else {
+        // User is not authenticated, redirect to the homepage
+        res.redirect('/');
+    }
+});
+
+app.listen(3000, () => {
+    console.log('Server is running on port 3000');
 });
