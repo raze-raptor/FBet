@@ -1,30 +1,77 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Your Existing JavaScript Code
-    // ... (Discord login handling, chat functionality, etc.)
+    const grid = document.getElementById('grid');
+    const gameResultDiv = document.getElementById('game-result');
+    const gridSize = 8;
+    const mineCount = 10;
+    let revealedCells = 0;
 
-    const modPanelBtn = document.getElementById('mod-panel-btn');
-    const adminPanel = document.querySelector('.admin-panel');
+    // Generate mines in random positions
+    const mines = new Array(gridSize).fill(false).map(() => new Array(gridSize).fill(false));
+    for (let i = 0; i < mineCount; i++) {
+        let row, col;
+        do {
+            row = Math.floor(Math.random() * gridSize);
+            col = Math.floor(Math.random() * gridSize);
+        } while (mines[row][col]);
+        mines[row][col] = true;
+    }
 
-    modPanelBtn.addEventListener('click', function() {
-        // Check if the user is logged in and has admin/moderator privileges (Discord user ID: 711995403267997749)
-        if (userLoggedIn && user.id === '711995403267997749') {
-            // Show the admin panel if the user is an admin/moderator
-            adminPanel.style.display = 'block';
-        } else {
-            // Show an error message or redirect to home page if the user doesn't have privileges
-            console.error('Access denied.');
+    // Create grid cells
+    for (let row = 0; row < gridSize; row++) {
+        for (let col = 0; col < gridSize; col++) {
+            const cell = document.createElement('div');
+            cell.className = 'cell';
+            grid.appendChild(cell);
+
+            cell.addEventListener('click', function() {
+                if (!mines[row][col]) {
+                    const mineCount = countAdjacentMines(row, col);
+                    cell.textContent = mineCount > 0 ? mineCount : '';
+                    cell.classList.add('revealed');
+                    revealedCells++;
+
+                    if (revealedCells === gridSize * gridSize - mineCount) {
+                        gameResultDiv.textContent = 'You won!';
+                    }
+                } else {
+                    cell.textContent = '💣';
+                    cell.classList.add('mine');
+                    gameResultDiv.textContent = 'Game Over!';
+                    revealAllMines();
+                }
+
+                cell.removeEventListener('click', arguments.callee);
+            });
         }
-    });
+    }
 
-    // Handle admin panel actions
-    const adminActionBtn = document.getElementById('admin-action-btn');
-    adminActionBtn.addEventListener('click', function() {
-        // Get the action and perform the corresponding admin/moderator action
-        const action = document.getElementById('admin-action').value;
-        // Implement the logic for different admin actions here
-        // Example: Deduct FBux, process applications, ban users, etc.
-        // ...
-        // After performing the action, you can show a success message to the user
-        console.log('Admin action executed:', action);
-    });
+    // Function to count adjacent mines
+    function countAdjacentMines(row, col) {
+        let count = 0;
+        for (let i = -1; i <= 1; i++) {
+            for (let j = -1; j <= 1; j++) {
+                const newRow = row + i;
+                const newCol = col + j;
+                if (newRow >= 0 && newRow < gridSize && newCol >= 0 && newCol < gridSize && mines[newRow][newCol]) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    // Function to reveal all mines when the game is ov
+    function revealAllMines() {
+        const cells = document.querySelectorAll('.cell');
+        cells.forEach(cell => {
+            const row = cell.parentElement.rowIndex;
+            const col = cell.cellIndex;
+            if (mines[row][col]) {
+                cell.textContent = '💣';
+                cell.classList.add('mine');
+            }
+        });
+    }
 });
+
+
