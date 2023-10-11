@@ -4,67 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FakeBet - The Crypto Casino</title>
+    <title>Mines Game</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
 <body class="dark-mode">
     <div class="container">
-        <div class="header">
-            <div class="profile">
-                <img src="placeholder-profile.png" alt="Profile Picture">
-                <span id="username">Guest</span>
-                <span id="balance">Balance: 450 FBux</span>
-            </div>
-            <div class="menu">
-                <button id="discord-login-btn">Login with Discord</button>
-                <button id="play-btn" disabled>Play</button>
-                <button id="logout-btn" disabled>Logout</button>
-                <button id="mod-panel-btn" disabled>Mod Panel</button>
-            </div>
-        </div>
-
-        <div class="content">
-            <!-- Website News Box -->
-            <div class="beveled-box">
-                <h2>Website News</h2>
-                <div id="news-content">No news available.</div>
-            </div>
-
-            <!-- Active Games -->
-            <div class="games beveled-box">
-                <h2>Active Games</h2>
-                <ul>
-                    <li>Mines</li>
-                    <li>Blackjack</li>
-                    <li>Dragon Tower</li>
-                    <li>Roulette</li>
-                    <li>Hi-Low</li>
-                    <li>Crash</li>
-                </ul>
-            </div>
-
-            <!-- Chat Box -->
-            <div class="chat beveled-box">
-                <div class="messages" id="chat-messages">Chat messages will appear here</div>
-                <input type="text" id="message-input" placeholder="Type your message..." disabled>
-                <button id="send-btn" disabled>Send</button>
-            </div>
-
-            <!-- Admin Panel -->
-            <div class="admin-panel beveled-box">
-                <h2>Admin Panel</h2>
-                <label for="admin-action">Select Action:</label>
-                <select id="admin-action">
-                    <option value="deduct-fbux">Deduct FBux</option>
-                    <option value="apply-fbux">Apply FBux</option>
-                    <option value="ban-account">Ban Account</option>
-                    <option value="warn-account">Warn Account</option>
-                </select>
-                <button id="admin-action-btn">Admin Action</button>
-            </div>
-        </div>
+        <h1>Mines Game</h1>
+        <div class="grid" id="grid"></div>
+        <div id="game-result"></div>
     </div>
 
     <script src="script.js"></script>
