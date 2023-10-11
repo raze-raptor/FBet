@@ -1,26 +1,41 @@
 body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
     background-color: #333;
     color: white;
-    font-family: Arial, sans-serif;
 }
 
 .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+    text-align: center;
 }
 
-.header {
+.grid {
+    display: grid;
+    grid-template-columns: repeat(8, 40px);
+    gap: 5px;
+    margin-top: 20px;
+}
+
+.cell {
+    width: 40px;
+    height: 40px;
+    background-color: #555;
+    color: #fff;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
+    cursor: pointer;
+    font-size: 20px;
 }
 
-.profile {
-    display: flex;
-    align-items: center;
+.cell.revealed {
+    background-color: #444;
 }
 
-.buttons button {
-    margin-left: 10px;
+.mine {
+    color: red;
 }
